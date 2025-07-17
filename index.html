@@ -3,328 +3,778 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kev Shock - Hellfire Edition</title>
-
+    <title>Kev Shock - Shock the Street with Style</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* --- HELL THEME STYLES --- */
-
+        /* --- Global Setup & Variables --- */
         :root {
-            /* --- ✨ HELLFIRE COLOR PALETTE --- */
-            --primary-color: #ffffff;
-            --secondary-color: #b3b3b3;
-            --background-color: #0c0a09; /* Deep charcoal black */
-            --surface-color: rgba(212, 77, 2, 0.05); /* Faint orange surface */
-            
-            /* --- ✨ FIERY GRADIENTS --- */
-            --accent-linear-gradient: linear-gradient(90deg, #6b0504, #d44d02, #ff8c00);
-            --accent-conic-gradient: conic-gradient(from 180deg at 50% 50%, #d44d02 0deg, #ff8c00 180deg, #d44d02 360deg);
-
-            --font-main: 'Poppins', sans-serif;
-            --shadow-light: 0 8px 32px 0 rgba(255, 100, 0, 0.4); /* Fiery glow */
-            --shadow-dark: 0 4px 15px 0 rgba(0, 0, 0, 0.5);
+            --bg-color: #050203;
+            --primary-color: #ff4800;
+            --secondary-color: #ff793f;
+            --text-color: #e0e0e0;
+            --glass-bg: rgba(15, 15, 15, 0.5);
+            --border-color: rgba(255, 72, 0, 0.3);
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Poppins', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--font-main); background-color: var(--background-color); color: var(--primary-color); overflow-x: hidden; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .hidden { opacity: 0; transform: translateY(30px) scale(0.95); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .visible { opacity: 1; transform: translateY(0) scale(1); }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        /* --- ✨ FLAME FLICKER ANIMATION --- */
-        @keyframes flame-flicker {
-            0%, 100% {
-                text-shadow: 0 0 4px #fff, 0 0 8px #ff4500, 0 0 12px #ff4500, 0 0 18px #d44d02;
-            }
-            50% {
-                text-shadow: 0 0 6px #fff, 0 0 12px #ff8c00, 0 0 20px #ff8c00, 0 0 30px #d44d02;
-            }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        /* --- Preloader --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* MODIFIED */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #preloader video {
+            position: absolute; /* MODIFIED */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* MODIFIED: Behind buttons */
+        }
+        
+        /* MODIFIED: Styling for the new enter button */
+        #enter-with-sound {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+            color: #fff;
+            background: var(--primary-color);
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1;
+            box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+        
+        #enter-with-sound:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary-color), 0 0 45px var(--secondary-color);
+        }
+
+        #skip-preloader {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            font-family: var(--font-heading);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px var(--primary-color);
+            z-index: 1; /* MODIFIED */
+        }
+
+        #skip-preloader:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary-color);
         }
 
         /* --- Navbar --- */
-        .navbar {
-            position: fixed; top: 0; width: 100%; padding: 20px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; transition: all 0.4s ease-in-out;
-        }
-
-        .navbar.scrolled {
-            background: rgba(12, 10, 9, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        #navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
             padding: 15px 5%;
-            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
-        }
-        
-        .navbar .logo {
-            font-size: 1.8rem; font-weight: 900; color: var(--primary-color);
-            text-decoration: none; letter-spacing: -1px;
-            animation: flame-flicker 2s ease-in-out infinite;
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
         }
 
-        .nav-links { list-style: none; display: flex; gap: 30px; }
-        .nav-links a { color: var(--secondary-color); text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
-        .nav-links a:hover { color: var(--primary-color); }
+        #navbar.scrolled {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #navbar nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            text-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
         /* --- Hero Section --- */
-        .hero {
-            height: 100vh; display: flex; justify-content: center; align-items: center;
-            text-align: center; padding: 0 5%; position: relative;
-            background: url('https://images.unsplash.com/photo-1616132694340-e17573f03b53?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: #000; /* Dark background for the fire */
+        }
+
+        .hero-content {
+            z-index: 2; /* Make sure content is above the fire */
+        }
+        
+        /* --- NEW: Hellfire Animation --- */
+        .fire-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: rise 5s infinite ease-in;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+                box-shadow: 0 0 5px 2px var(--primary-color), 0 0 10px 5px var(--secondary-color), 0 0 15px 8px #000;
+            }
+            100% {
+                transform: translateY(-80vh) scale(0);
+                opacity: 0;
+                box-shadow: none;
+            }
+        }
+        
+        /* Generating random particles */
+        .particle:nth-child(1) { left: 10%; animation-duration: 4s; animation-delay: 0.5s; width: 5px; height: 5px; }
+        .particle:nth-child(2) { left: 20%; animation-duration: 3s; animation-delay: 1s; width: 3px; height: 3px; }
+        .particle:nth-child(3) { left: 30%; animation-duration: 5s; animation-delay: 0s; width: 6px; height: 6px; }
+        .particle:nth-child(4) { left: 40%; animation-duration: 6s; animation-delay: 2s; width: 4px; height: 4px; }
+        .particle:nth-child(5) { left: 50%; animation-duration: 3.5s; animation-delay: 1.5s; width: 5px; height: 5px; }
+        .particle:nth-child(6) { left: 60%; animation-duration: 7s; animation-delay: 0.2s; width: 3px; height: 3px; }
+        .particle:nth-child(7) { left: 70%; animation-duration: 4.5s; animation-delay: 2.5s; width: 6px; height: 6px; }
+        .particle:nth-child(8) { left: 80%; animation-duration: 5.5s; animation-delay: 1.2s; width: 4px; height: 4px; }
+        .particle:nth-child(9) { left: 90%; animation-duration: 3.2s; animation-delay: 0.8s; width: 5px; height: 5px; }
+        .particle:nth-child(10) { left: 5%; animation-duration: 6.5s; animation-delay: 3s; width: 3px; height: 3px; }
+        .particle:nth-child(11) { left: 15%; animation-duration: 4.8s; animation-delay: 1.8s; width: 6px; height: 6px; }
+        .particle:nth-child(12) { left: 25%; animation-duration: 5.2s; animation-delay: 2.2s; width: 4px; height: 4px; }
+        .particle:nth-child(13) { left: 35%; animation-duration: 3.7s; animation-delay: 0.4s; width: 5px; height: 5px; }
+        .particle:nth-child(14) { left: 45%; animation-duration: 7.5s; animation-delay: 1.6s; width: 3px; height: 3px; }
+        .particle:nth-child(15) { left: 55%; animation-duration: 4.2s; animation-delay: 2.8s; width: 6px; height: 6px; }
+        .particle:nth-child(16) { left: 65%; animation-duration: 5.8s; animation-delay: 0.6s; width: 4px; height: 4px; }
+        .particle:nth-child(17) { left: 75%; animation-duration: 3.4s; animation-delay: 1.4s; width: 5px; height: 5px; }
+        .particle:nth-child(18) { left: 85%; animation-duration: 6.2s; animation-delay: 2.6s; width: 3px; height: 3px; }
+        .particle:nth-child(19) { left: 95%; animation-duration: 4.6s; animation-delay: 0.1s; width: 6px; height: 6px; }
+        .particle:nth-child(20) { left: 2%; animation-duration: 5.4s; animation-delay: 2.1s; width: 4px; height: 4px; }
+        .particle:nth-child(21) { left: 12%; animation-duration: 4.1s; animation-delay: 0.6s; width: 5px; height: 5px; }
+        .particle:nth-child(22) { left: 22%; animation-duration: 3.1s; animation-delay: 1.1s; width: 3px; height: 3px; }
+        .particle:nth-child(23) { left: 32%; animation-duration: 5.1s; animation-delay: 0.1s; width: 6px; height: 6px; }
+        .particle:nth-child(24) { left: 42%; animation-duration: 6.1s; animation-delay: 2.1s; width: 4px; height: 4px; }
+        .particle:nth-child(25) { left: 52%; animation-duration: 3.6s; animation-delay: 1.6s; width: 5px; height: 5px; }
+        .particle:nth-child(26) { left: 62%; animation-duration: 7.1s; animation-delay: 0.3s; width: 3px; height: 3px; }
+        .particle:nth-child(27) { left: 72%; animation-duration: 4.4s; animation-delay: 2.4s; width: 6px; height: 6px; }
+        .particle:nth-child(28) { left: 82%; animation-duration: 5.6s; animation-delay: 1.3s; width: 4px; height: 4px; }
+        .particle:nth-child(29) { left: 92%; animation-duration: 3.3s; animation-delay: 0.9s; width: 5px; height: 5px; }
+        .particle:nth-child(30) { left: 8%; animation-duration: 6.4s; animation-delay: 3.1s; width: 3px; height: 3px; }
+
+        .logo-animated {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            color: #fff;
+            animation: fire-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes fire-glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--secondary-color), 0 0 40px var(--secondary-color), 0 0 50px var(--primary-color), 0 0 60px var(--primary-color), 0 0 70px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color), 0 0 50px var(--secondary-color), 0 0 60px var(--secondary-color), 0 0 70px var(--secondary-color), 0 0 80px var(--secondary-color);
+            }
+        }
+
+        .tagline-animated {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-top: 1rem;
+            color: var(--text-color);
+            letter-spacing: 2px;
+            animation: flicker 3s linear infinite;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px var(--primary-color), 0 0 80px var(--primary-color), 0 0 90px var(--primary-color);
+            }
+            20%, 24%, 55% {       
+                text-shadow: none;
+            }
+        }
+
+        .scroll-down-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            animation: bounce 2s infinite;
+            z-index: 3;
+        }
+
+        .scroll-down-btn .arrow svg {
+            fill: var(--text-color);
+            transition: fill 0.3s ease;
+        }
+
+        .scroll-down-btn:hover .arrow svg {
+            fill: var(--primary-color);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -15px); }
+            60% { transform: translate(-50%, -8px); }
+        }
+
+        .section-padding {
+            padding: 100px 5%;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px var(--border-color);
+        }
+
+        .product-image {
             overflow: hidden;
         }
-        
-        .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1; }
-        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2; }
-        .hero-content { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; animation: fadeIn 1.5s ease-out; }
-        
-        .hero-logo {
-            font-size: clamp(3rem, 10vw, 6rem); font-weight: 900;
-            letter-spacing: -3px; margin-bottom: 10px;
-            animation: flame-flicker 2s ease-in-out infinite;
+
+        .product-image img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
         }
 
-        .hero-tagline { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 400; color: var(--secondary-color); margin-bottom: 40px; }
-
-        .btn {
-            padding: 15px 35px; border: none; border-radius: 50px;
-            background: var(--accent-linear-gradient);
-            color: white; font-weight: 600; font-size: 1rem; text-decoration: none;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-light);
-            background-size: 200% 100%;
-        }
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(255, 100, 0, 0.5);
-            background-position: right center;
-        }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- Section Styles --- */
-        .section { padding: 100px 8%; }
-        .section-title { text-align: center; font-size: 2.5rem; font-weight: 700; margin-bottom: 60px; position: relative; }
-        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--accent-linear-gradient); border-radius: 2px; }
-
-        /* --- Products Section --- */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        
-        .product-card {
-            background: #1a110a;
-            border-radius: 20px; text-align: center;
-            transition: transform 0.3s ease; position: relative; overflow: hidden;
-        }
-        
-        .product-card::before {
-            content: ''; position: absolute; width: 120%; height: 120%;
-            top: -10%; left: -10%; z-index: 0;
-            background: var(--accent-conic-gradient);
-            animation: rotate 4s linear infinite; opacity: 0;
-            transition: opacity 0.4s ease-out;
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
         }
 
-        .product-card:hover::before { opacity: 1; }
-        .product-card-content { position: relative; z-index: 1; background: #1a110a; margin: 2px; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; height: calc(100% - 4px); }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .product-info {
+            padding: 25px;
+            text-align: center;
+        }
 
-        .product-card:hover { transform: translateY(-10px); }
-        .product-image-container { border-radius: 15px; overflow: hidden; margin-bottom: 20px; }
-        .product-card img { width: 100%; height: 280px; object-fit: cover; display: block; transition: transform 0.4s ease; }
-        .product-card:hover img { transform: scale(1.1); }
-        .product-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 10px; flex-grow: 1; }
-        .product-price { font-size: 1.2rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 20px; }
-        .buy-btn { width: 100%; padding: 12px 20px; border-radius: 10px; }
+        .product-info h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
 
-        /* --- Other Sections --- */
-        .about-content { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.1rem; line-height: 1.8; color: var(--secondary-color); }
-        .testimonial-slider { position: relative; max-width: 800px; margin: 0 auto; overflow: hidden; border-radius: 20px; background: var(--surface-color); padding: 40px; }
-        .testimonial-slide { display: none; text-align: center; animation: slideFadeIn 0.8s ease; }
-        .testimonial-slide.active { display: block; }
-        .testimonial-text { font-size: 1.2rem; font-style: italic; color: var(--secondary-color); line-height: 1.6; margin-bottom: 20px; }
-        .testimonial-author { font-weight: 700; color: var(--primary-color); }
-        .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); width: calc(100% - 20px); left: 10px; display: flex; justify-content: space-between; }
-        .slider-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 140, 0, 0.2); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease; }
-        .slider-btn:hover { background: rgba(255, 140, 0, 0.2); }
-        @keyframes slideFadeIn { from { opacity: 0.5; } to { opacity: 1; } }
-        
-        .footer { background-color: #000000; padding: 50px 8%; text-align: center; }
-        .social-icons { margin-bottom: 20px; }
-        .social-icons a { color: var(--secondary-color); margin: 0 15px; font-size: 1.5rem; transition: color 0.3s ease, transform 0.3s ease; display: inline-block; }
-        .social-icons a svg { width: 24px; height: 24px; fill: currentColor; }
-        .social-icons a:hover { color: #ff8c00; transform: translateY(-5px); }
-        .footer-contact, .copyright { color: var(--secondary-color); margin-bottom: 10px; }
-        .footer-contact a { color: var(--secondary-color); text-decoration: none; }
-        .footer-contact a:hover { color: var(--primary-color); text-decoration: underline; }
-        .copyright { font-size: 0.9rem; }
-        @media (max-width: 768px) { .nav-links { display: none; } .navbar { padding: 15px 5%; } .section { padding: 80px 5%; } .section-title { font-size: 2rem; } .product-grid { grid-template-columns: 1fr; } .testimonial-slider { padding: 30px 20px; } .slider-nav { padding: 0; } }
+        .product-info .price {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
 
+        .whatsapp-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 72, 0, 0.5);
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 72, 0, 0.8);
+        }
+
+        #about {
+            background-color: #080405;
+            text-align: center;
+        }
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .glow-text {
+            animation: glow-subtle 3s ease-in-out infinite alternate;
+        }
+        @keyframes glow-subtle {
+            from { text-shadow: 0 0 10px var(--border-color); }
+            to { text-shadow: 0 0 20px var(--primary-color); }
+        }
+        #typewriter {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            min-height: 100px; 
+        }
+
+        .testimonial-slider-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            padding: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+
+        .testimonial-card p {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-card h4 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+        }
+        .slider-btn.prev { left: 10px; }
+        .slider-btn.next { right: 10px; }
+
+        #footer {
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+        }
+
+        .social-icons a {
+            color: var(--text-color);
+            margin: 0 15px;
+            transition: color 0.3s, transform 0.3s;
+            display: inline-block;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px var(--primary-color));
+        }
+
+        .contact-email {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+        .contact-email:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            animation: copyright-glow 4s linear infinite;
+        }
+
+        @keyframes copyright-glow {
+            0%, 100% { color: var(--text-color); }
+            50% { color: var(--secondary-color); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <header class="navbar">
-        <a href="#" class="logo">KEV SHOCK</a>
-        <ul class="nav-links">
-            <li><a href="#products">T-Shirts</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#testimonials">Reviews</a></li>
-        </ul>
+  <div id="preloader">
+    
+    <video id="preloader-video" playsinline>
+        <source src="0717.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <button id="enter-with-sound">Enter with Sound</button>
+
+    <button id="skip-preloader">SKIP</button>
+
+</div>
+
+    <header id="navbar">
+        <nav>
+            <a href="#hero" class="nav-logo">KEV SHOCK</a>
+            <ul class="nav-links">
+                <li><a href="#products">Collection</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#testimonials">Rave</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <section class="hero">
-        <div id="particles-js"></div>
-        <div class="hero-content">
-            <h1 class="hero-logo">KEV SHOCK</h1>
-            <p class="hero-tagline">Shock the Street with Style</p>
-            <a href="#products" class="btn">SHOP COLLECTION</a>
-        </div>
-    </section>
-
     <main>
-        <section id="products" class="section">
-            <h2 class="section-title hidden">Our Collection</h2>
-            <div class="product-grid">
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1964&auto=format&fit=crop" alt="Inferno Tee"> </div> <h3 class="product-name">Inferno Tee</h3> <p class="product-price">$29.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1964&auto=format&fit=crop" alt="Charred Skull Tee"> </div> <h3 class="product-name">Charred Skull Tee</h3> <p class="product-price">$34.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=80&w=1964&auto=format&fit=crop" alt="Ashen Tee"> </div> <h3 class="product-name">Ashen Tee</h3> <p class="product-price">$29.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=1915&auto=format&fit=crop" alt="Lavaflow Tee"> </div> <h3 class="product-name">Lavaflow Tee</h3> <p class="product-price">$32.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=1964&auto=format&fit=crop" alt="Soul Eater Hoodie"> </div> <h3 class="product-name">Soul Eater Hoodie</h3> <p class="product-price">$59.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1591047139829-d916e6ca4431?q=80&w=1964&auto=format&fit=crop" alt="Abyssal Jacket"> </div> <h3 class="product-name">Abyssal Jacket</h3> <p class="product-price">$89.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=2069&auto=format&fit=crop" alt="Brimstone Longsleeve"> </div> <h3 class="product-name">Brimstone Longsleeve</h3> <p class="product-price">$39.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1563178406-412f22c1a757?q=80&w=1964&auto=format&fit=crop" alt="Hellgate Cap"> </div> <h3 class="product-name">Hellgate Cap</h3> <p class="product-price">$24.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
-
+        <section id="hero">
+            <div class="fire-container">
+                <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            </div>
+            
+            <div class="hero-content">
+                <h1 class="logo-animated">Kev Shock</h1>
+                <p class="tagline-animated">Shock the Street with Style</p>
+                <a href="#products" class="scroll-down-btn">
+                    <span>Explore</span>
+                    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"/></svg>
+                </a>
             </div>
         </section>
-        <section id="about" class="section"> <h2 class="section-title hidden">About Kev Shock</h2> <div class="about-content hidden"> <p>Born from the energy of the streets, <strong>Kev Shock</strong> isn't just a clothing brand—it's a statement. We were founded on the belief that style is a form of self-expression, a way to own your identity and electrify your presence. Every thread, every design is crafted for the bold, the brave, and the trendsetters who aren't afraid to stand out. We're more than just T-shirts; we're the armor for your urban adventures.</p> </div> </section>
-        <section id="testimonials" class="section"> <h2 class="section-title hidden">What Our Customers Say</h2> <div class="testimonial-slider hidden"> <div class="testimonial-slide active"> <p class="testimonial-text">"The quality is insane! The 'Inferno Tee' feels amazing and the design gets compliments everywhere I go. Definitely my new favorite brand."</p> <p class="testimonial-author">- Alex R.</p> </div> <div class="testimonial-slide"> <p class="testimonial-text">"Fast delivery and the fit is perfect. It's rare to find a brand that has both great style and high-quality material. Kev Shock nailed it."</p> <p class="testimonial-author">- Maya J.</p> </div> <div class="testimonial-slide"> <p class="testimonial-text">"Finally, a brand that gets the urban vibe right. The clothes look even better in person. 10/10 would recommend."</p> <p class="testimonial-author">- Leo Chen</p> </div> <div class="slider-nav"> <button class="slider-btn" id="prevBtn">&lt;</button> <button class="slider-btn" id="nextBtn">&gt;</button> </div> </div> </section>
+
+        <section id="products" class="section-padding">
+            <h2 class="section-title animate-on-scroll">Our Collection</h2>
+            <div class="product-grid">
+                <div class="product-card animate-on-scroll">
+                    <div class="product-image">
+                        <img src="assets/images/tshirt1.png" alt="Inferno Tee">
+                    </div>
+                    <div class="product-info">
+                        <h3>Inferno Tee</h3>
+                        <p class="price">$29.99</p>
+                        <button class="whatsapp-btn" data-product-name="Inferno Tee">🔥 Buy Now on WhatsApp</button>
+                    </div>
+                </div>
+                <div class="product-card animate-on-scroll">
+                     <div class="product-image">
+                        <img src="assets/images/tshirt2.png" alt="Cyberflame Tee">
+                    </div>
+                    <div class="product-info">
+                        <h3>Cyberflame Tee</h3>
+                        <p class="price">$34.99</p>
+                        <button class="whatsapp-btn" data-product-name="Cyberflame Tee">🔥 Buy Now on WhatsApp</button>
+                    </div>
+                </div>
+                <div class="product-card animate-on-scroll">
+                    <div class="product-image">
+                        <img src="assets/images/tshirt3.png" alt="Glitch Skull Tee">
+                    </div>
+                    <div class="product-info">
+                        <h3>Glitch Skull Tee</h3>
+                        <p class="price">$32.50</p>
+                        <button class="whatsapp-btn" data-product-name="Glitch Skull Tee">🔥 Buy Now on WhatsApp</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section-padding">
+             <div class="about-content animate-on-scroll">
+                <h2 class="section-title glow-text">About Kev Shock</h2>
+                <p id="typewriter"></p>
+            </div>
+        </section>
+        
+        <section id="testimonials" class="section-padding">
+            <h2 class="section-title animate-on-scroll">What The Streets Say</h2>
+            <div class="testimonial-slider-container animate-on-scroll">
+                <div class="testimonial-slider">
+                    <div class="testimonial-card"><p>"Absolutely fire designs! The quality is insane and I get compliments everywhere I go. Kev Shock is the real deal."</p><h4>- Alex R.</h4></div>
+                    <div class="testimonial-card"><p>"The cyberpunk vibe is exactly what I was looking for. Edgy, bold, and comfortable. My new favorite brand."</p><h4>- Jess K.</h4></div>
+                    <div class="testimonial-card"><p>"Sickest T-shirts in the game. The glow effects are not just on the site, the designs feel like they're alive."</p><h4>- Mike D.</h4></div>
+                </div>
+                <button class="slider-btn prev">&lt;</button>
+                <button class="slider-btn next">&gt;</button>
+            </div>
+        </section>
     </main>
-    <footer class="footer">
+
+    <footer id="footer">
         <div class="social-icons">
-            <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9 26.3 26.2 58 34.4 93.9 36.2 37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
-            <a href="#" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 122.8 122.8V209.9z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            <a href="#" aria-label="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h-2a4 4 0 0 0-4 4v12a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4V8a4 4 0 0 0-4-4z"></path><path d="M12 12V8"></path></svg></a>
         </div>
-        <p class="footer-contact">Contact: <a href="mailto:contact@kevshock.com">contact@kevshock.com</a></p>
-        <p class="copyright">&copy; 2025 Kev Shock. All Rights Reserved. Last updated: July 17, 2025.</p>
+        <a href="mailto:contact@kevshock.com" class="contact-email">contact@kevshock.com</a>
+        <p class="copyright">&copy; <span id="year"></span> Kev Shock. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
-            
-            // --- ✨ UPGRADED HELLFIRE ANIMATION WITH EMBERS AND SMOKE ---
-            await tsParticles.load({
-                id: "particles-js",
-                options: {
-                    background: {
-                        color: "transparent"
-                    },
-                    detectRetina: true,
-                    fpsLimit: 120,
-                    particles: {
-                        // Smoke Layer
-                        groups: {
-                            smoke: {
-                                number: {
-                                    value: 40
-                                },
-                                color: {
-                                    value: "#555555"
-                                },
-                                shape: {
-                                    type: "circle"
-                                },
-                                opacity: {
-                                    value: { min: 0, max: 0.2 },
-                                    animation: { enable: true, speed: 0.5, sync: false }
-                                },
-                                size: {
-                                    value: { min: 20, max: 40 },
-                                    animation: { enable: true, speed: 5, sync: false }
-                                },
-                                move: {
-                                    enable: true,
-                                    direction: "top",
-                                    speed: { min: 0.5, max: 1.5 },
-                                    straight: false,
-                                    drift: {min: 1, max: 3}
-                                }
-                            }
-                        },
-                        // Ember Layer
-                        number: {
-                            value: 120,
-                            density: { enable: true }
-                        },
-                        color: {
-                            value: ["#ff5722", "#ff8c00", "#ffca28"]
-                        },
-                        shape: {
-                            type: "circle"
-                        },
-                        opacity: {
-                            value: { min: 0.1, max: 1 },
-                            animation: { enable: true, speed: 1.5, sync: false }
-                        },
-                        size: {
-                            value: { min: 1, max: 3 }
-                        },
-                        move: {
-                            enable: true,
-                            direction: "top",
-                            speed: { min: 1, max: 3 },
-                            straight: false,
-                        }
-                    }
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Preloader Logic (MODIFIED) ---
+            const preloader = document.getElementById('preloader');
+            const skipButton = document.getElementById('skip-preloader');
+            const preloaderVideo = document.getElementById('preloader-video');
+            const enterButton = document.getElementById('enter-with-sound'); // MODIFIED
+
+            const hidePreloader = () => {
+                preloader.classList.add('hidden');
+                sessionStorage.setItem('preloaderShown', 'true');
+            };
+
+            if (sessionStorage.getItem('preloaderShown')) {
+                preloader.style.display = 'none';
+            } else {
+                // MODIFIED: Logic now starts with a click
+                enterButton.addEventListener('click', () => {
+                    preloaderVideo.play();
+                    enterButton.style.display = 'none'; // Hide button after click
+                });
+
+                preloaderVideo.onended = hidePreloader;
+                skipButton.addEventListener('click', hidePreloader);
+            }
+
+            // --- Sticky Navbar ---
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
                 }
             });
 
-            // Sticky Navbar on Scroll
-            const navbar = document.querySelector('.navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) navbar.classList.add('scrolled');
-                else navbar.classList.remove('scrolled');
+            // --- Scroll Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
             });
 
-            // Scroll-triggered Animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => observer.observe(el));
 
-            // Testimonial Slider
-            const slides = document.querySelectorAll('.testimonial-slide');
-            const nextBtn = document.getElementById('nextBtn');
-            const prevBtn = document.getElementById('prevBtn');
-            let currentSlide = 0;
-            function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); }
-            function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }
-            function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); }
-            nextBtn.addEventListener('click', nextSlide);
-            prevBtn.addEventListener('click', prevSlide);
-            setInterval(nextSlide, 5000);
+            // --- WhatsApp Button Logic ---
+            const whatsappButtons = document.querySelectorAll('.whatsapp-btn');
+            const phoneNumber = '94740310879';
 
-            // WhatsApp Button Logic
-            const whatsAppButtons = document.querySelectorAll('.buy-btn');
-            const phoneNumber = '94740310879'; // Your WhatsApp Number
-            whatsAppButtons.forEach(button => {
+            whatsappButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const cardContent = button.closest('.product-card-content');
-                    const productName = cardContent.querySelector('.product-name').textContent;
-                    const message = `Hi, I'm from Sri Lanka and interested in buying the Kev Shock T-shirt: ${productName}`;
+                    const productName = button.getAttribute('data-product-name');
+                    const message = `Hi, I'm interested in buying the Kev Shock T-shirt: ${productName}`;
                     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                     window.open(whatsappURL, '_blank');
                 });
             });
+
+            // --- Typewriter Effect ---
+            const typewriterElement = document.getElementById('typewriter');
+            const typewriterText = "Born from the chaos of the streets and forged in digital fire, Kev Shock is not just a brand; it's a rebellion. We craft high-voltage streetwear for those who dare to stand out. Every thread is a statement, every design a piece of the urban soul. Wear the shock, own the street.";
+            let i = 0;
+
+            function typeWriter() {
+                if (i < typewriterText.length) {
+                    typewriterElement.innerHTML += typewriterText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            const aboutObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        typeWriter();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            aboutObserver.observe(document.getElementById('about'));
+
+            // --- Testimonial Slider ---
+            const slider = document.querySelector('.testimonial-slider');
+            const slides = document.querySelectorAll('.testimonial-card');
+            const prevBtn = document.querySelector('.slider-btn.prev');
+            const nextBtn = document.querySelector('.slider-btn.next');
+            let currentIndex = 0;
+
+            function updateSliderPosition() {
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSliderPosition();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSliderPosition();
+            });
+            
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSliderPosition();
+            }, 5000);
+
+            // --- Footer Copyright Year ---
+            document.getElementById('year').textContent = new Date().getFullYear();
+
         });
     </script>
-
 </body>
 </html>
