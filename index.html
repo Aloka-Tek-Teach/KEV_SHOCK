@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kev Shock - Shock the Street with Style</title>
+    <title>Kev Shock - Hellfire Edition</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS Reset & Global Styles */
+        /* --- HELL THEME STYLES --- */
+
         :root {
+            /* --- ✨ HELLFIRE COLOR PALETTE --- */
             --primary-color: #ffffff;
-            --secondary-color: #cccccc;
-            --background-color: #0f0f10;
-            --surface-color: rgba(255, 255, 255, 0.05);
+            --secondary-color: #b3b3b3;
+            --background-color: #0c0a09; /* Deep charcoal black */
+            --surface-color: rgba(212, 77, 2, 0.05); /* Faint orange surface */
             
-            /* --- ✨ NEW COLORFUL GRADIENTS --- */
-            --accent-linear-gradient: linear-gradient(90deg, #00b8ff, #ff00c1, #ffc800);
-            --accent-conic-gradient: conic-gradient(from 180deg at 50% 50%, #ff00c1 0deg, #9b00e0 50%, #00b8ff 180deg, #00f7ff 270%, #ff00c1 360deg);
+            /* --- ✨ FIERY GRADIENTS --- */
+            --accent-linear-gradient: linear-gradient(90deg, #6b0504, #d44d02, #ff8c00);
+            --accent-conic-gradient: conic-gradient(from 180deg at 50% 50%, #d44d02 0deg, #ff8c00 180deg, #d44d02 360deg);
 
             --font-main: 'Poppins', sans-serif;
-            --shadow-light: 0 8px 32px 0 rgba(255, 0, 193, 0.3);
+            --shadow-light: 0 8px 32px 0 rgba(255, 100, 0, 0.4); /* Fiery glow */
             --shadow-dark: 0 4px 15px 0 rgba(0, 0, 0, 0.5);
         }
 
@@ -30,49 +32,38 @@
         html { scroll-behavior: smooth; }
         body { font-family: var(--font-main); background-color: var(--background-color); color: var(--primary-color); overflow-x: hidden; }
 
-        /* Scroll Animation */
         .hidden { opacity: 0; transform: translateY(30px) scale(0.95); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .visible { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* --- ✨ NEW NEON ANIMATION KEYFRAMES FOR LOGO --- */
-        @keyframes neon-flicker {
+        /* --- ✨ FLAME FLICKER ANIMATION --- */
+        @keyframes flame-flicker {
             0%, 100% {
-                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #00b8ff, 0 0 20px #00b8ff, 0 0 30px #00b8ff;
+                text-shadow: 0 0 4px #fff, 0 0 8px #ff4500, 0 0 12px #ff4500, 0 0 18px #d44d02;
             }
             50% {
-                text-shadow: 0 0 2px #fff, 0 0 6px #fff, 0 0 12px #ff00c1, 0 0 25px #ff00c1, 0 0 40px #ff00c1;
+                text-shadow: 0 0 6px #fff, 0 0 12px #ff8c00, 0 0 20px #ff8c00, 0 0 30px #d44d02;
             }
         }
 
         /* --- Navbar --- */
         .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            transition: all 0.4s ease-in-out;
+            position: fixed; top: 0; width: 100%; padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; transition: all 0.4s ease-in-out;
         }
 
         .navbar.scrolled {
-            background: rgba(15, 15, 16, 0.7);
+            background: rgba(12, 10, 9, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 15px 5%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
         }
         
-        /* --- ✨ ALWAYS ON NEON LOGO STYLE --- */
         .navbar .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--primary-color);
-            text-decoration: none;
-            letter-spacing: -1px;
-            animation: neon-flicker 3s ease-in-out infinite; /* Animation applied here */
+            font-size: 1.8rem; font-weight: 900; color: var(--primary-color);
+            text-decoration: none; letter-spacing: -1px;
+            animation: flame-flicker 2s ease-in-out infinite;
         }
 
         .nav-links { list-style: none; display: flex; gap: 30px; }
@@ -81,14 +72,9 @@
 
         /* --- Hero Section --- */
         .hero {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 5%;
-            position: relative;
-            background: url('https://images.unsplash.com/photo-1576995853123-5a10305d9340?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            text-align: center; padding: 0 5%; position: relative;
+            background: url('https://images.unsplash.com/photo-1616132694340-e17573f03b53?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
             overflow: hidden;
         }
         
@@ -97,16 +83,13 @@
         .hero-content { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; animation: fadeIn 1.5s ease-out; }
         
         .hero-logo {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 900;
-            letter-spacing: -3px;
-            margin-bottom: 10px;
-            animation: neon-flicker 3s ease-in-out infinite; /* <-- THE FIX IS HERE */
+            font-size: clamp(3rem, 10vw, 6rem); font-weight: 900;
+            letter-spacing: -3px; margin-bottom: 10px;
+            animation: flame-flicker 2s ease-in-out infinite;
         }
 
         .hero-tagline { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 400; color: var(--secondary-color); margin-bottom: 40px; }
 
-        /* --- ✨ BUTTONS WITH NEW COLORFUL GRADIENT --- */
         .btn {
             padding: 15px 35px; border: none; border-radius: 50px;
             background: var(--accent-linear-gradient);
@@ -114,7 +97,11 @@
             cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-light);
             background-size: 200% 100%;
         }
-        .btn:hover { transform: translateY(-5px); box-shadow: 0 12px 40px 0 rgba(255, 0, 193, 0.4); background-position: right center; }
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(255, 100, 0, 0.5);
+            background-position: right center;
+        }
         
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -124,49 +111,35 @@
         .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--accent-linear-gradient); border-radius: 2px; }
 
         /* --- Products Section --- */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
         
-        /* --- ✨ NEON BORDER WITH NEW COLORFUL GRADIENT --- */
         .product-card {
-            background: #161618;
-            border-radius: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: #1a110a;
+            border-radius: 20px; text-align: center;
+            transition: transform 0.3s ease; position: relative; overflow: hidden;
         }
         
         .product-card::before {
-            content: '';
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            top: -10%;
-            left: -10%;
-            z-index: 0;
+            content: ''; position: absolute; width: 120%; height: 120%;
+            top: -10%; left: -10%; z-index: 0;
             background: var(--accent-conic-gradient);
-            animation: rotate 4s linear infinite;
-            opacity: 0;
+            animation: rotate 4s linear infinite; opacity: 0;
             transition: opacity 0.4s ease-out;
         }
 
         .product-card:hover::before { opacity: 1; }
-        .product-card-content { position: relative; z-index: 1; background: #161618; margin: 2px; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; height: calc(100% - 4px); }
+        .product-card-content { position: relative; z-index: 1; background: #1a110a; margin: 2px; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; height: calc(100% - 4px); }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .product-card:hover { transform: translateY(-10px); }
         .product-image-container { border-radius: 15px; overflow: hidden; margin-bottom: 20px; }
-        .product-card img { width: 100%; height: auto; display: block; transition: transform 0.4s ease; }
+        .product-card img { width: 100%; height: 280px; object-fit: cover; display: block; transition: transform 0.4s ease; }
         .product-card:hover img { transform: scale(1.1); }
         .product-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 10px; flex-grow: 1; }
         .product-price { font-size: 1.2rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 20px; }
         .buy-btn { width: 100%; padding: 12px 20px; border-radius: 10px; }
 
-        /* Other sections styling (abbreviated for clarity) */
+        /* --- Other Sections --- */
         .about-content { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.1rem; line-height: 1.8; color: var(--secondary-color); }
         .testimonial-slider { position: relative; max-width: 800px; margin: 0 auto; overflow: hidden; border-radius: 20px; background: var(--surface-color); padding: 40px; }
         .testimonial-slide { display: none; text-align: center; animation: slideFadeIn 0.8s ease; }
@@ -174,19 +147,21 @@
         .testimonial-text { font-size: 1.2rem; font-style: italic; color: var(--secondary-color); line-height: 1.6; margin-bottom: 20px; }
         .testimonial-author { font-weight: 700; color: var(--primary-color); }
         .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); width: calc(100% - 20px); left: 10px; display: flex; justify-content: space-between; }
-        .slider-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease; }
-        .slider-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .slider-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 140, 0, 0.2); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease; }
+        .slider-btn:hover { background: rgba(255, 140, 0, 0.2); }
         @keyframes slideFadeIn { from { opacity: 0.5; } to { opacity: 1; } }
-        .footer { background-color: #0a0a0b; padding: 50px 8%; text-align: center; }
+        
+        .footer { background-color: #000000; padding: 50px 8%; text-align: center; }
         .social-icons { margin-bottom: 20px; }
         .social-icons a { color: var(--secondary-color); margin: 0 15px; font-size: 1.5rem; transition: color 0.3s ease, transform 0.3s ease; display: inline-block; }
         .social-icons a svg { width: 24px; height: 24px; fill: currentColor; }
-        .social-icons a:hover { color: var(--primary-color); transform: translateY(-5px); }
+        .social-icons a:hover { color: #ff8c00; transform: translateY(-5px); }
         .footer-contact, .copyright { color: var(--secondary-color); margin-bottom: 10px; }
         .footer-contact a { color: var(--secondary-color); text-decoration: none; }
         .footer-contact a:hover { color: var(--primary-color); text-decoration: underline; }
         .copyright { font-size: 0.9rem; }
         @media (max-width: 768px) { .nav-links { display: none; } .navbar { padding: 15px 5%; } .section { padding: 80px 5%; } .section-title { font-size: 2rem; } .product-grid { grid-template-columns: 1fr; } .testimonial-slider { padding: 30px 20px; } .slider-nav { padding: 0; } }
+
     </style>
 </head>
 <body>
@@ -213,76 +188,20 @@
         <section id="products" class="section">
             <h2 class="section-title hidden">Our Collection</h2>
             <div class="product-grid">
-                <div class="product-card hidden">
-                    <div class="product-card-content">
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1980&auto=format&fit=crop" alt="Urban Glitch T-Shirt">
-                        </div>
-                        <h3 class="product-name">Urban Glitch Tee</h3>
-                        <p class="product-price">$29.99</p>
-                        <button class="btn buy-btn">Buy Now on WhatsApp</button>
-                    </div>
-                </div>
-                <div class="product-card hidden">
-                    <div class="product-card-content">
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1964&auto=format&fit=crop" alt="Midnight Rebel T-Shirt">
-                        </div>
-                        <h3 class="product-name">Midnight Rebel Tee</h3>
-                        <p class="product-price">$34.99</p>
-                        <button class="btn buy-btn">Buy Now on WhatsApp</button>
-                    </div>
-                </div>
-                <div class="product-card hidden">
-                    <div class="product-card-content">
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=80&w=1964&auto=format&fit=crop" alt="Concrete Jungle T-Shirt">
-                        </div>
-                        <h3 class="product-name">Concrete Jungle Tee</h3>
-                        <p class="product-price">$29.99</p>
-                        <button class="btn buy-btn">Buy Now on WhatsApp</button>
-                    </div>
-                </div>
-                <div class="product-card hidden">
-                    <div class="product-card-content">
-                        <div class="product-image-container">
-                            <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=1915&auto=format&fit=crop" alt="Monochrome Shock Tee">
-                        </div>
-                        <h3 class="product-name">Monochrome Shock Tee</h3>
-                        <p class="product-price">$32.99</p>
-                        <button class="btn buy-btn">Buy Now on WhatsApp</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1964&auto=format&fit=crop" alt="Inferno Tee"> </div> <h3 class="product-name">Inferno Tee</h3> <p class="product-price">$29.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1964&auto=format&fit=crop" alt="Charred Skull Tee"> </div> <h3 class="product-name">Charred Skull Tee</h3> <p class="product-price">$34.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=80&w=1964&auto=format&fit=crop" alt="Ashen Tee"> </div> <h3 class="product-name">Ashen Tee</h3> <p class="product-price">$29.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=1915&auto=format&fit=crop" alt="Lavaflow Tee"> </div> <h3 class="product-name">Lavaflow Tee</h3> <p class="product-price">$32.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=1964&auto=format&fit=crop" alt="Soul Eater Hoodie"> </div> <h3 class="product-name">Soul Eater Hoodie</h3> <p class="product-price">$59.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1591047139829-d916e6ca4431?q=80&w=1964&auto=format&fit=crop" alt="Abyssal Jacket"> </div> <h3 class="product-name">Abyssal Jacket</h3> <p class="product-price">$89.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=80&w=2069&auto=format&fit=crop" alt="Brimstone Longsleeve"> </div> <h3 class="product-name">Brimstone Longsleeve</h3> <p class="product-price">$39.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
+                <div class="product-card hidden"> <div class="product-card-content"> <div class="product-image-container"> <img src="https://images.unsplash.com/photo-1563178406-412f22c1a757?q=80&w=1964&auto=format&fit=crop" alt="Hellgate Cap"> </div> <h3 class="product-name">Hellgate Cap</h3> <p class="product-price">$24.99</p> <button class="btn buy-btn">Buy Now on WhatsApp</button> </div> </div>
 
-        <section id="about" class="section">
-            <h2 class="section-title hidden">About Kev Shock</h2>
-            <div class="about-content hidden">
-                 <p>Born from the energy of the streets, <strong>Kev Shock</strong> isn't just a clothing brand—it's a statement. We were founded on the belief that style is a form of self-expression, a way to own your identity and electrify your presence. Every thread, every design is crafted for the bold, the brave, and the trendsetters who aren't afraid to stand out. We're more than just T-shirts; we're the armor for your urban adventures.</p>
             </div>
         </section>
-        <section id="testimonials" class="section">
-            <h2 class="section-title hidden">What Our Customers Say</h2>
-            <div class="testimonial-slider hidden">
-                <div class="testimonial-slide active">
-                    <p class="testimonial-text">"The quality is insane! The 'Urban Glitch' tee feels amazing and the design gets compliments everywhere I go. Definitely my new favorite brand."</p>
-                    <p class="testimonial-author">- Alex R.</p>
-                </div>
-                <div class="testimonial-slide">
-                    <p class="testimonial-text">"Fast delivery and the fit is perfect. It's rare to find a brand that has both great style and high-quality material. Kev Shock nailed it."</p>
-                    <p class="testimonial-author">- Maya J.</p>
-                </div>
-                <div class="testimonial-slide">
-                    <p class="testimonial-text">"Finally, a brand that gets the urban vibe right. The clothes look even better in person. 10/10 would recommend."</p>
-                    <p class="testimonial-author">- Leo Chen</p>
-                </div>
-                <div class="slider-nav">
-                    <button class="slider-btn" id="prevBtn">&lt;</button>
-                    <button class="slider-btn" id="nextBtn">&gt;</button>
-                </div>
-            </div>
-        </section>
+        <section id="about" class="section"> <h2 class="section-title hidden">About Kev Shock</h2> <div class="about-content hidden"> <p>Born from the energy of the streets, <strong>Kev Shock</strong> isn't just a clothing brand—it's a statement. We were founded on the belief that style is a form of self-expression, a way to own your identity and electrify your presence. Every thread, every design is crafted for the bold, the brave, and the trendsetters who aren't afraid to stand out. We're more than just T-shirts; we're the armor for your urban adventures.</p> </div> </section>
+        <section id="testimonials" class="section"> <h2 class="section-title hidden">What Our Customers Say</h2> <div class="testimonial-slider hidden"> <div class="testimonial-slide active"> <p class="testimonial-text">"The quality is insane! The 'Inferno Tee' feels amazing and the design gets compliments everywhere I go. Definitely my new favorite brand."</p> <p class="testimonial-author">- Alex R.</p> </div> <div class="testimonial-slide"> <p class="testimonial-text">"Fast delivery and the fit is perfect. It's rare to find a brand that has both great style and high-quality material. Kev Shock nailed it."</p> <p class="testimonial-author">- Maya J.</p> </div> <div class="testimonial-slide"> <p class="testimonial-text">"Finally, a brand that gets the urban vibe right. The clothes look even better in person. 10/10 would recommend."</p> <p class="testimonial-author">- Leo Chen</p> </div> <div class="slider-nav"> <button class="slider-btn" id="prevBtn">&lt;</button> <button class="slider-btn" id="nextBtn">&gt;</button> </div> </div> </section>
     </main>
     <footer class="footer">
         <div class="social-icons">
@@ -293,24 +212,76 @@
         <p class="copyright">&copy; 2025 Kev Shock. All Rights Reserved. Last updated: July 17, 2025.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             
-            // "Glowing Dust" background animation
-            tsParticles.load("particles-js", {
-                fpsLimit: 60,
-                particles: {
-                    number: { value: 160, density: { enable: true, value_area: 800 } },
-                    color: { value: "#ffffff" },
-                    shape: { type: "circle" },
-                    opacity: { value: {min: 0.1, max: 0.5}, animation: { enable: true, speed: 1, sync: false } },
-                    size: { value: {min: 1, max: 3} },
-                    move: { enable: true, speed: 0.5, direction: "top", straight: false, out_mode: "out" }
-                },
-                interactivity: { events: { onhover: { enable: false }, onclick: { enable: false } } },
-                retina_detect: true
+            // --- ✨ UPGRADED HELLFIRE ANIMATION WITH EMBERS AND SMOKE ---
+            await tsParticles.load({
+                id: "particles-js",
+                options: {
+                    background: {
+                        color: "transparent"
+                    },
+                    detectRetina: true,
+                    fpsLimit: 120,
+                    particles: {
+                        // Smoke Layer
+                        groups: {
+                            smoke: {
+                                number: {
+                                    value: 40
+                                },
+                                color: {
+                                    value: "#555555"
+                                },
+                                shape: {
+                                    type: "circle"
+                                },
+                                opacity: {
+                                    value: { min: 0, max: 0.2 },
+                                    animation: { enable: true, speed: 0.5, sync: false }
+                                },
+                                size: {
+                                    value: { min: 20, max: 40 },
+                                    animation: { enable: true, speed: 5, sync: false }
+                                },
+                                move: {
+                                    enable: true,
+                                    direction: "top",
+                                    speed: { min: 0.5, max: 1.5 },
+                                    straight: false,
+                                    drift: {min: 1, max: 3}
+                                }
+                            }
+                        },
+                        // Ember Layer
+                        number: {
+                            value: 120,
+                            density: { enable: true }
+                        },
+                        color: {
+                            value: ["#ff5722", "#ff8c00", "#ffca28"]
+                        },
+                        shape: {
+                            type: "circle"
+                        },
+                        opacity: {
+                            value: { min: 0.1, max: 1 },
+                            animation: { enable: true, speed: 1.5, sync: false }
+                        },
+                        size: {
+                            value: { min: 1, max: 3 }
+                        },
+                        move: {
+                            enable: true,
+                            direction: "top",
+                            speed: { min: 1, max: 3 },
+                            straight: false,
+                        }
+                    }
+                }
             });
 
             // Sticky Navbar on Scroll
@@ -333,9 +304,7 @@
             const nextBtn = document.getElementById('nextBtn');
             const prevBtn = document.getElementById('prevBtn');
             let currentSlide = 0;
-            function showSlide(index) {
-                slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
-            }
+            function showSlide(index) { slides.forEach((slide, i) => slide.classList.toggle('active', i === index)); }
             function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }
             function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); }
             nextBtn.addEventListener('click', nextSlide);
